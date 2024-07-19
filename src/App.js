@@ -1,12 +1,15 @@
 import './App.scss';
 import Header from './components/Header';
-import Table from './components/TableUser';
+import TableUser from './components/TableUser';
+import Container from 'react-bootstrap/Container';
 
 function App() {
   return (
     <>
       <Header />
-      <Table />
+      <Container>
+        <TableUser />
+      </Container>
     </>
   );
 }
