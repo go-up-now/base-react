@@ -4,15 +4,20 @@ import { FetchAllUser } from '../service/UserService';
 import ReactPaginate from 'react-paginate';
 import { ModalAddUser } from './ModalAddUser';
 import { ModalUpdateUser } from './ModalUpdateUser'
+import { ModalDeleteUser } from './ModalDeleteUser ';
 
 const TableUser = () => {
 
     const [listUser, setListUser] = useState([]);
     const [totalUser, setTotalUser] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const [dataUpdateUser, setdataUpdateUser] = useState({});
     const [showModalUser, setShowModalUser] = useState(false);
+
+    const [dataUpdateUser, setdataUpdateUser] = useState({});
     const [showModalUpdateUser, setshowModalUpdateUser] = useState(false);
+
+    const [showModalDeleteUser, setshowModalDeleteUser] = useState(false);
+    const [dataDeleteUser, setdataDeleteUser] = useState({});
 
     useEffect(() => {
         getUsers(1)
@@ -35,6 +40,7 @@ const TableUser = () => {
     const handleClose = () => {
         setShowModalUser(false);
         setshowModalUpdateUser(false);
+        setshowModalDeleteUser(false)
     }
 
     const handleUpdateUser = (user) => {
@@ -44,6 +50,11 @@ const TableUser = () => {
     const handleEditUser = (user) => {
         setdataUpdateUser(user);
         setshowModalUpdateUser(true);
+    }
+
+    const handleDeleteUser = (user) => {
+        setshowModalDeleteUser(true);
+        setdataDeleteUser(user);
     }
 
     return (
@@ -76,7 +87,9 @@ const TableUser = () => {
                                     >
                                         Edit
                                     </div>
-                                    <div className='btn btn-danger'>Delete</div>
+                                    <div className='btn btn-danger'
+                                        onClick={() => handleDeleteUser(item)}
+                                    >Delete</div>
                                 </td>
                             </tr>
                         )
@@ -112,6 +125,11 @@ const TableUser = () => {
                 show={showModalUpdateUser}
                 handleClose={handleClose}
                 dataUpdateUser={dataUpdateUser}
+            />
+            <ModalDeleteUser
+                show={showModalDeleteUser}
+                handleClose={handleClose}
+                dataDeleteUser={dataDeleteUser}
             />
         </>
     )
