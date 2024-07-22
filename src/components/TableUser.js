@@ -3,14 +3,16 @@ import { useEffect, useState } from 'react';
 import { FetchAllUser } from '../service/UserService';
 import ReactPaginate from 'react-paginate';
 import { ModalAddUser } from './ModalAddUser';
+import { ModalUpdateUser } from './ModalUpdateUser'
 
 const TableUser = () => {
 
     const [listUser, setListUser] = useState([]);
     const [totalUser, setTotalUser] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    // const [totalPages, setTotalPages] = useState(0);
+    const [dataUpdateUser, setdataUpdateUser] = useState({});
     const [showModalUser, setShowModalUser] = useState(false);
+    const [showModalUpdateUser, setshowModalUpdateUser] = useState(false);
 
     useEffect(() => {
         getUsers(1)
@@ -32,10 +34,16 @@ const TableUser = () => {
 
     const handleClose = () => {
         setShowModalUser(false);
+        setshowModalUpdateUser(false);
     }
 
     const handleUpdateUser = (user) => {
         setListUser([user, ...listUser])
+    }
+
+    const handleEditUser = (user) => {
+        setdataUpdateUser(user);
+        setshowModalUpdateUser(true);
     }
 
     return (
@@ -51,6 +59,7 @@ const TableUser = () => {
                         <th>email</th>
                         <th>first_name</th>
                         <th>last_name</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,6 +70,14 @@ const TableUser = () => {
                                 <td>{item.email}rk</td>
                                 <td>{item.first_name}</td>
                                 <td>{item.last_name}</td>
+                                <td>
+                                    <div className='btn btn-warning me-3'
+                                        onClick={() => handleEditUser(item)}
+                                    >
+                                        Edit
+                                    </div>
+                                    <div className='btn btn-danger'>Delete</div>
+                                </td>
                             </tr>
                         )
                     })}
@@ -90,6 +107,11 @@ const TableUser = () => {
                 show={showModalUser}
                 handleClose={handleClose}
                 handleUpdateUser={handleUpdateUser}
+            />
+            <ModalUpdateUser
+                show={showModalUpdateUser}
+                handleClose={handleClose}
+                dataUpdateUser={dataUpdateUser}
             />
         </>
     )
