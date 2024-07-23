@@ -5,6 +5,8 @@ import ReactPaginate from 'react-paginate';
 import { ModalAddUser } from './ModalAddUser';
 import { ModalUpdateUser } from './ModalUpdateUser'
 import { ModalDeleteUser } from './ModalDeleteUser ';
+import './TableUser.scss';
+import _ from "lodash";
 
 
 const TableUser = () => {
@@ -19,6 +21,9 @@ const TableUser = () => {
 
     const [showModalDeleteUser, setshowModalDeleteUser] = useState(false);
     const [dataDeleteUser, setdataDeleteUser] = useState({});
+
+    const [sortBy, setSortBy] = useState('asc');
+    const [fieldSort, setFieldSort] = useState('id');
 
     useEffect(() => {
         getUsers(1)
@@ -58,6 +63,15 @@ const TableUser = () => {
         setdataDeleteUser(user);
     }
 
+    const handleSort = (sortBy, fieldSort) => {
+        setSortBy(sortBy);
+        setFieldSort(fieldSort);
+        var cloneListUsers = _.cloneDeep(listUser)
+        var cloneListUsers = _.orderBy(cloneListUsers, [fieldSort], [sortBy]);
+        // Khúc này là gọi api
+        setListUser(cloneListUsers)
+    }
+
     return (
         <>
             <div className='d-flex justify-content-between align-items-center'>
@@ -67,9 +81,29 @@ const TableUser = () => {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th className='d-flex justify-content-between'>
+                            <span>ID</span>
+                            <span className='cursor-pointer'>
+                                <i class="fa-solid fa-arrow-down me-3"
+                                    onClick={() => handleSort('desc', 'id')}
+                                ></i>
+                                <i class="fa-solid fa-arrow-up"
+                                    onClick={() => handleSort('asc', 'id')}
+                                ></i>
+                            </span>
+                        </th>
                         <th>email</th>
-                        <th>first_name</th>
+                        <th className='d-flex justify-content-between'>
+                            <span>first_name</span>
+                            <span className='cursor-pointer'>
+                                <i class="fa-solid fa-arrow-down me-3"
+                                    onClick={() => handleSort('desc', 'first_name')}
+                                ></i>
+                                <i class="fa-solid fa-arrow-up"
+                                    onClick={() => handleSort('asc', 'first_name')}
+                                ></i>
+                            </span>
+                        </th>
                         <th>last_name</th>
                         <th>Action</th>
                     </tr>
