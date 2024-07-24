@@ -6,8 +6,10 @@ import { ModalAddUser } from './ModalAddUser';
 import { ModalUpdateUser } from './ModalUpdateUser'
 import { ModalDeleteUser } from './ModalDeleteUser ';
 import './TableUser.scss';
-import _, { isArrayLike } from "lodash";
+import _ from "lodash";
 import { CSVLink } from "react-csv";
+import Papa from "papaparse";
+import { toast } from 'react-toastify';
 
 
 const TableUser = () => {
@@ -91,13 +93,6 @@ const TableUser = () => {
         }
     }, 400)
 
-    const data = [
-        ["firstname", "lastname", "email"],
-        ["Ahmed", "Tomi", "ah@smthing.co.com"],
-        ["Raed", "Labes", "rl@smthing.co.com"],
-        ["Yezzi", "Min l3b", "ymin@cocococo.com"]
-    ];
-
     const handleExport = (event, done) => {
         let resault = [];
         if (listUser && listUser.length > 0) {
@@ -116,6 +111,52 @@ const TableUser = () => {
         }
     }
 
+    const handleImport = (e) => {
+        if (e && e.target && e.target.files[0]) {
+            let file = e.target.files[0];
+
+            if (file.type !== 'text/csv') {
+                toast.error('Only accept CSV file!')
+                return;
+            }
+
+            Papa.parse(file, {
+                // header: true,
+                complete: function (responses) {
+                    let rowCSV = responses.data;
+                    if (rowCSV.length > 0) {
+                        if (rowCSV[0].length === 3) {
+                            if (rowCSV[0][0] !== 'email' ||
+                                rowCSV[0][1] !== 'first_name' ||
+                                rowCSV[0][2] !== 'last_name'
+                            ) {
+                                toast.error('Wrong format header on CSV file!')
+                            }
+                            else {
+                                let result = [];
+                                rowCSV.map((item, index) => {
+                                    if (index > 0 && item.length === 3) {
+                                        let object = {};
+                                        object.email = item[0]
+                                        object.first_name = item[1]
+                                        object.last_name = item[2]
+
+                                        result.push(object);
+                                    }
+                                })
+                                setListUser(result)
+                            }
+                        }
+                        else
+                            toast.error('Wrong format CSV file!')
+                    }
+                    else
+                        toast.error('Not data on CSV file!')
+                }
+            });
+        }
+    }
+
     return (
         <>
             <div className='d-flex justify-content-between align-items-center'>
@@ -124,7 +165,7 @@ const TableUser = () => {
                     <label htmlFor='file' className='btn btn-warning'>
                         <i className="fa-solid fa-file-arrow-up"></i> Import
                     </label>
-                    <input type='file' id='file' hidden />
+                    <input type='file' id='file' hidden onChange={e => handleImport(e)} />
                     <CSVLink
                         data={dataExport}
                         asyncOnClick={true}
