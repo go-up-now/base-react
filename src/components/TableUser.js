@@ -7,6 +7,7 @@ import { ModalUpdateUser } from './ModalUpdateUser'
 import { ModalDeleteUser } from './ModalDeleteUser ';
 import './TableUser.scss';
 import _, { isArrayLike } from "lodash";
+import { CSVLink } from "react-csv";
 
 
 const TableUser = () => {
@@ -26,6 +27,7 @@ const TableUser = () => {
     const [fieldSort, setFieldSort] = useState('id');
 
     const [keyword, setKeyword] = useState('')
+
 
     useEffect(() => {
         getUsers(1)
@@ -87,11 +89,34 @@ const TableUser = () => {
         }
     }, 400)
 
+    const data = [
+        ["firstname", "lastname", "email"],
+        ["Ahmed", "Tomi", "ah@smthing.co.com"],
+        ["Raed", "Labes", "rl@smthing.co.com"],
+        ["Yezzi", "Min l3b", "ymin@cocococo.com"]
+    ];
+
     return (
         <>
             <div className='d-flex justify-content-between align-items-center'>
                 <span>List user</span>
-                <button className='btn btn-success' onClick={() => setShowModalUser(true)}>Add user</button>
+                <div className='group-btns'>
+                    <label htmlFor='file' className='btn btn-warning'>
+                        <i class="fa-solid fa-file-arrow-up"></i> Import
+                    </label>
+                    <input type='file' id='file' hidden />
+                    <CSVLink
+                        data={data}
+                        filename={"list_user.csv"}
+                        className="btn btn-primary"
+                        target="_blank"
+                    >
+                        <i className="fa-solid fa-file-arrow-down"></i> Export
+                    </CSVLink>
+                    <button className='btn btn-success' onClick={() => setShowModalUser(true)}>
+                        <i className="fa-solid fa-plus"></i> Add new
+                    </button>
+                </div>
             </div>
             <div>
                 <input
