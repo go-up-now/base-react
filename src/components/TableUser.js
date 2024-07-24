@@ -28,6 +28,8 @@ const TableUser = () => {
 
     const [keyword, setKeyword] = useState('')
 
+    const [dataExport, setDataExport] = useState([])
+
 
     useEffect(() => {
         getUsers(1)
@@ -96,20 +98,39 @@ const TableUser = () => {
         ["Yezzi", "Min l3b", "ymin@cocococo.com"]
     ];
 
+    const handleExport = (event, done) => {
+        let resault = [];
+        if (listUser && listUser.length > 0) {
+            resault.push(['ID', 'EMAIL', 'FIRST NAME', 'LAST NAME']);
+            listUser.map(item => {
+                let arr = [];
+                arr[0] = item.id
+                arr[1] = item.email
+                arr[2] = item.first_name
+                arr[3] = item.last_name
+
+                resault.push(arr)
+            })
+            setDataExport(resault);
+            // done(true);
+        }
+    }
+
     return (
         <>
             <div className='d-flex justify-content-between align-items-center'>
                 <span>List user</span>
                 <div className='group-btns'>
                     <label htmlFor='file' className='btn btn-warning'>
-                        <i class="fa-solid fa-file-arrow-up"></i> Import
+                        <i className="fa-solid fa-file-arrow-up"></i> Import
                     </label>
                     <input type='file' id='file' hidden />
                     <CSVLink
-                        data={data}
+                        data={dataExport}
+                        asyncOnClick={true}
+                        onClick={handleExport}
                         filename={"list_user.csv"}
                         className="btn btn-primary"
-                        target="_blank"
                     >
                         <i className="fa-solid fa-file-arrow-down"></i> Export
                     </CSVLink>
@@ -131,10 +152,10 @@ const TableUser = () => {
                         <th className='d-flex justify-content-between'>
                             <span>ID</span>
                             <span className='cursor-pointer'>
-                                <i class="fa-solid fa-arrow-down me-3"
+                                <i className="fa-solid fa-arrow-down me-3"
                                     onClick={() => handleSort('desc', 'id')}
                                 ></i>
-                                <i class="fa-solid fa-arrow-up"
+                                <i className="fa-solid fa-arrow-up"
                                     onClick={() => handleSort('asc', 'id')}
                                 ></i>
                             </span>
@@ -143,10 +164,10 @@ const TableUser = () => {
                         <th className='d-flex justify-content-between'>
                             <span>first_name</span>
                             <span className='cursor-pointer'>
-                                <i class="fa-solid fa-arrow-down me-3"
+                                <i className="fa-solid fa-arrow-down me-3"
                                     onClick={() => handleSort('desc', 'first_name')}
                                 ></i>
-                                <i class="fa-solid fa-arrow-up"
+                                <i className="fa-solid fa-arrow-up"
                                     onClick={() => handleSort('asc', 'first_name')}
                                 ></i>
                             </span>
