@@ -6,7 +6,7 @@ import { ModalAddUser } from './ModalAddUser';
 import { ModalUpdateUser } from './ModalUpdateUser'
 import { ModalDeleteUser } from './ModalDeleteUser ';
 import './TableUser.scss';
-import _ from "lodash";
+import _, { isArrayLike } from "lodash";
 
 
 const TableUser = () => {
@@ -24,6 +24,8 @@ const TableUser = () => {
 
     const [sortBy, setSortBy] = useState('asc');
     const [fieldSort, setFieldSort] = useState('id');
+
+    const [keyword, setKeyword] = useState('')
 
     useEffect(() => {
         getUsers(1)
@@ -72,11 +74,31 @@ const TableUser = () => {
         setListUser(cloneListUsers)
     }
 
+    const handleSearch = _.debounce((event) => {
+        let term = event.target.value;
+        if (term) {
+            let cloneListUsers = _.cloneDeep(listUser)
+            cloneListUsers = cloneListUsers.filter(item => item.email.includes(term));
+            setListUser(cloneListUsers)
+            console.log(123)
+        }
+        else {
+            getUsers();
+        }
+    }, 400)
+
     return (
         <>
             <div className='d-flex justify-content-between align-items-center'>
                 <span>List user</span>
                 <button className='btn btn-success' onClick={() => setShowModalUser(true)}>Add user</button>
+            </div>
+            <div>
+                <input
+                    className='col-md-6 my-2'
+                    placeholder='Search user by email...'
+                    onChange={(event) => handleSearch(event)}
+                ></input>
             </div>
             <Table striped bordered hover>
                 <thead>
