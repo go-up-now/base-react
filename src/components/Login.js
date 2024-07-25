@@ -1,21 +1,34 @@
 import './assets/Login.scss'
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { loginAPI } from '../service/UserService';
 
 const Login = () => {
-    const [username, setUsername] = useState('')
+    const [email, setemail] = useState('')
     const [password, setPassword] = useState('')
     const [login, setLogin] = useState(false)
+
+    const handleLogin = async () => {
+        if (!email || !password) {
+            toast.error('email or password not empty!')
+            return;
+        }
+        let response = await loginAPI(email, password);
+        if (response && response.token) {
+            localStorage.setItem('token', response.token)
+        }
+    }
 
     return (
         <>
             <div className="login-container col-md-4">
                 <div className="title-login text-center fs-4 fw-bold">Log in</div>
-                <label className='fw-bold'>Email or Username</label>
+                <label className='fw-bold'>Username or email</label>
                 <input
-                    placeholder="Email or Username"
-                    value={username}
+                    placeholder="Email or email"
+                    value={email}
                     className='p-2 '
-                    onChange={e => setUsername(e.target.value)}
+                    onChange={e => setemail(e.target.value)}
                 ></input>
                 <div className='input-password'>
                     <input
@@ -31,10 +44,11 @@ const Login = () => {
                     ></i>
                 </div>
                 <button
-                    className={username && password ? 'action btn-login' : 'btn-login'}
-                    disabled={username && password ? false : true}
+                    className={email && password ? 'action btn-login' : 'btn-login'}
+                    disabled={email && password ? false : true}
+                    onClick={() => handleLogin()}
                 >Log in</button>
-                <div className='text-center'> <i class="fa-solid fa-angles-left"></i> Go back</div>
+                <div className='text-center go-back'> <i className="fa-solid fa-angles-left"></i> Go back</div>
             </div>
         </>
     )
