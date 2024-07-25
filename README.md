@@ -9,3 +9,19 @@
 * ...
 
 ### Screen shot
+
+### Screen shot
+
+#### HOME
+![](https://github.com/go-up-now/base-react/blob/main/images/home.png)
+
+#### MANAGE USERS
+![](https://github.com/go-up-now/base-react/blob/main/images/manage-users.png)
+
+#### ADD NEW USER
+![](https://github.com/go-up-now/base-react/blob/main/images/add-new-user.png)
+
+#### LOGIN
+![](https://github.com/go-up-now/base-react/blob/main/images/login.png)
+
+#### © 2024 nghia.anh | go-up-now
