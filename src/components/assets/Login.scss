@@ -1,0 +1,42 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    margin: 100px auto;
+    gap: 7px;
+}
+
+input.p-2 {
+    background: rgb(238, 238, 239);
+    border: none;
+    width: 100%;
+
+    &:hover {
+        background-color: #dedede;
+    }
+}
+
+.btn-login {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 3px;
+    border: none;
+
+    &.action {
+        background-color: #fe2c55;
+        color: white;
+    }
+}
+
+.btn-login:disabled {
+    cursor: not-allowed;
+}
+
+.input-password {
+    position: relative;
+}
+
+.eye {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+}
