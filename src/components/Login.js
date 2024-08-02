@@ -1,22 +1,24 @@
 import './assets/Login.scss'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { toast } from 'react-toastify';
 import { loginAPI } from '../service/UserService';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 const Login = () => {
     const [email, setemail] = useState('')
     const [password, setPassword] = useState('')
     const [login, setLogin] = useState(false)
     const [loading, setLoading] = useState(false)
+    const { loginContext } = useContext(UserContext)
 
     let navigate = useNavigate();
 
-    useEffect(() => {
-        let token = localStorage.getItem('token')
-        if (token)
-            navigate('/')
-    }, [])
+    // useEffect(() => {
+    //     let token = localStorage.getItem('token')
+    //     if (token)
+    //         navigate('/')
+    // }, [])
 
     const handleLogin = async () => {
         if (!email || !password) {
@@ -26,7 +28,7 @@ const Login = () => {
         setLoading(true)
         let response = await loginAPI(email, password);
         if (response && response.token) {
-            localStorage.setItem('token', response.token)
+            loginContext(email, response.token);
             navigate('/')
         }
         else {
@@ -35,6 +37,10 @@ const Login = () => {
             }
         }
         setLoading(false)
+    }
+
+    const handleGoBack = () => {
+        navigate('/')
     }
 
     return (
@@ -66,9 +72,11 @@ const Login = () => {
                     disabled={email && password ? false : true}
                     onClick={() => handleLogin()}
                 >
-                    {loading && <i class="fa-solid fa-circle-notch fa-spin"></i>}
+                    {loading && <i className="fa-solid fa-circle-notch fa-spin"></i>}
                     &nbsp;Log in</button>
-                <div className='text-center go-back'> <i className="fa-solid fa-angles-left"></i> Go back</div>
+                <div className='text-center go-back'> <i className="fa-solid fa-angles-left"></i>
+                    <span onClick={handleGoBack}>&nbsp;Go back</span>
+                </div>
             </div>
         </>
     )
