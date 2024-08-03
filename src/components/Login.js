@@ -26,7 +26,7 @@ const Login = () => {
             return;
         }
         setLoading(true)
-        let response = await loginAPI(email, password);
+        let response = await loginAPI(email.trim(), password);
         if (response && response.token) {
             loginContext(email, response.token);
             navigate('/')
@@ -41,6 +41,11 @@ const Login = () => {
 
     const handleGoBack = () => {
         navigate('/')
+    }
+
+    const handleSubmit = (e) => {
+        if (e && e.key === 'Enter')
+            handleLogin();
     }
 
     return (
@@ -61,6 +66,7 @@ const Login = () => {
                         value={password}
                         className='p-2 '
                         onChange={e => setPassword(e.target.value)}
+                        onKeyDown={e => handleSubmit(e)}
                     ></input>
                     <i
                         className={login ? "fa-solid fa-eye eye" : "fa-solid fa-eye-slash eye"}
