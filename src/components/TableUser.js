@@ -227,12 +227,12 @@ const TableUser = () => {
                                     <td>{item.first_name}</td>
                                     <td>{item.last_name}</td>
                                     <td>
-                                        <div className='btn btn-warning me-3 col-sm-4 col-12'
+                                        <div className='btn btn-warning me-3 col-md-4 col-12'
                                             onClick={() => handleEditUser(item)}
                                         >
                                             Edit
                                         </div>
-                                        <div className='btn btn-danger col-sm-4 col-12'
+                                        <div className='btn btn-danger col-md-4 col-12'
                                             onClick={() => handleDeleteUser(item)}
                                         >Delete</div>
                                     </td>

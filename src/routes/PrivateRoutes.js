@@ -20,7 +20,6 @@ const PrivateRoutes = (props) => {
                     You don't have permission to access this page.
                 </p>
             </Alert>
-
         </>
     )
 }
